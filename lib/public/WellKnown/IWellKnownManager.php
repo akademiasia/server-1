@@ -24,27 +24,32 @@ declare(strict_types=1);
  *
  */
 
-namespace OCP\Webfinger;
+namespace OCP\WellKnown;
 
-use OC\Webfinger\Exceptions\WebfingerRequestException;
+use OC\WellKnown\Exceptions\WellKnownRequestException;
 use OCP\IRequest;
 
 /**
- * @since 20.0.0
+ * @since 21.0.0
  *
- * Interface IWebfingerManager
+ * Interface IWellKnownManager
  *
- * @package OCP\Webfinger
+ * @package OCP\WellKnown
  */
-interface IWebfingerManager {
+interface IWellKnownManager {
+
+
+	const WEBFINGER = 'webfinger';
+	const NODEINFO = 'nodeinfo';
 
 
 	/**
 	 * @param IRequest $request
 	 *
-	 * @throws WebfingerRequestException
+	 * @return bool
+	 * @throws WellKnownRequestException
 	 *
-	 * @since 20.0.0
+	 * @since 21.0.0
 	 */
-	public function manageRequest(IRequest $request): void;
+	public function manageRequest(IRequest $request): bool;
 }

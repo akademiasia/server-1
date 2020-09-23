@@ -24,43 +24,43 @@ declare(strict_types=1);
  *
  */
 
-namespace OC\Webfinger\Event;
+namespace OC\WellKnown\Event;
 
 use OCP\EventDispatcher\Event;
-use OCP\Webfinger\Model\IWebfinger;
+use OCP\WellKnown\Model\IWellKnown;
 
 /**
- * Class WebfingerEvent
+ * Class WellKnownEvent
  *
- * @package OC\Webfinger\Events
- * @since 20.0.0
+ * @package OC\WellKnown\Events
+ * @since 21.0.0
  */
-class WebfingerEvent extends Event {
+class WellKnownEvent extends Event {
 
 
-	/** @var IWebfinger */
-	private $webfinger;
+	/** @var IWellKnown */
+	private $wellKnown;
 
 
 	/**
-	 * WebfingerEvent constructor.
+	 * WellKnownEvent constructor.
 	 *
-	 * @param IWebfinger $webfinger
+	 * @param IWellKnown $wellKnown
 	 *
-	 * @since 20.0.0
+	 * @since 21.0.0
 	 */
-	public function __construct(IWebfinger $webfinger) {
+	public function __construct(IWellKnown $wellKnown) {
 		parent::__construct();
 
-		$this->webfinger = $webfinger;
+		$this->wellKnown = $wellKnown;
 	}
 
 
 	/**
-	 * @return IWebfinger
-	 * @since 20.0.0
+	 * @return IWellKnown
+	 * @since 21.0.0
 	 */
-	public function getWebfinger(): IWebfinger {
-		return $this->webfinger;
+	public function getWellKnown(): IWellKnown {
+		return $this->wellKnown;
 	}
 }

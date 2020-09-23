@@ -25,25 +25,28 @@ declare(strict_types=1);
  */
 
 
-namespace OC\Webfinger\Exceptions;
+namespace OC\WellKnown\Exceptions;
+
 
 use Exception;
 use Throwable;
 
+
 /**
- * Class WebfingerRequestException
+ * Class WellKnownRequestException
  *
- * @package OC\Webfinger\Exceptions
- * @since 20.0.0
+ * @package OC\WellKnown\Exceptions
+ * @since 21.0.0
  */
-class WebfingerRequestException extends Exception {
+class WellKnownRequestException extends Exception {
+
 
 	/** @var int */
 	private $errorCode;
 
 
 	/**
-	 * WebfingerRequestException constructor.
+	 * WellKnownRequestException constructor.
 	 *
 	 * @param int $errorCode
 	 * @param string $message
@@ -58,7 +61,7 @@ class WebfingerRequestException extends Exception {
 
 	/**
 	 * @return int
-	 * @since 20.0.0
+	 * @since 21.0.0
 	 */
 	public function getErrorCode(): int {
 		return $this->errorCode;

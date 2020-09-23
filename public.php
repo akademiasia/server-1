@@ -31,9 +31,9 @@
  *
  */
 
-use OC\Webfinger\Exceptions\WebfingerRequestException;
-use OC\Webfinger\WebfingerManager;
-use OCP\Webfinger\IWebfingerManager;
+use OC\WellKnown\Exceptions\WellKnownRequestException;
+use OC\WellKnown\WellKnownManager;
+use OCP\WellKnown\IWellKnownManager;
 
 require_once __DIR__ . '/lib/versioncheck.php';
 
@@ -60,15 +60,15 @@ try {
 		list($service) = explode('/', $pathInfo);
 	}
 
-	if (strtolower($service) === 'webfinger') {
-		OC_App::loadApps();
-		try {
-			/** @var IWebfingerManager $manager */
-			$manager = \OC::$server->query(WebfingerManager::class);
-			$manager->manageRequest($request);
-		} catch (WebfingerRequestException $e) {
-			http_response_code($e->getErrorCode());
+	OC_App::loadApps();
+	try {
+		/** @var IWellKnownManager $manager */
+		$manager = \OC::$server->query(WellKnownManager::class);
+		if ($manager->manageRequest($request)) {
+			exit;
 		}
+	} catch (WellKnownRequestException $e) {
+		http_response_code($e->getErrorCode());
 		exit;
 	}
 
@@ -84,15 +84,15 @@ try {
 
 	// Load all required applications
 	\OC::$REQUESTEDAPP = $app;
-	OC_App::loadApps(['authentication']);
-	OC_App::loadApps(['filesystem', 'logging']);
+//	OC_App::loadApps(['authentication']); // should not be needed anymore
+//	OC_App::loadApps(['filesystem', 'logging']);
 
 	if (!\OC::$server->getAppManager()
 					 ->isInstalled($app)) {
 		http_response_code(404);
 		exit;
 	}
-	OC_App::loadApp($app);
+//	OC_App::loadApp($app);
 	OC_User::setIncognitoMode(true);
 
 	$baseuri = OC::$WEBROOT . '/public.php/' . $service . '/';

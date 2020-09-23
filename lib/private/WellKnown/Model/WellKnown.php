@@ -25,21 +25,28 @@ declare(strict_types=1);
  */
 
 
-namespace OC\Webfinger\Model;
+namespace OC\WellKnown\Model;
 
 use JsonSerializable;
-use OCP\Webfinger\Model\IWebfinger;
+use OCP\IRequest;
+use OCP\WellKnown\Model\IWellKnown;
 
 /**
- * @since 20.0.0
+ * @since 21.0.0
  *
- * @package OC\Webfinger\Model
+ * @package OC\WellKnown\Model
  */
-final class Webfinger implements IWebfinger, JsonSerializable {
+final class WellKnown implements IWellKnown, JsonSerializable {
 
 
 	/** @var string */
-	private $subject;
+	private $service;
+
+	/** @var IRequest */
+	private $request;
+
+	/** @var string */
+	private $subject = '';
 
 	/** @var array */
 	private $aliases = [];
@@ -55,20 +62,41 @@ final class Webfinger implements IWebfinger, JsonSerializable {
 
 
 	/**
-	 * Webfinger constructor.
+	 * WellKnown constructor.
 	 *
-	 * @param string $subject
+	 * @param string $service
+	 * @param IRequest $request
 	 *
-	 * @since 20.0.0
+	 * @since 21.0.0
 	 */
-	public function __construct(string $subject) {
-		$this->subject = $subject;
+	public function __construct(string $service, IRequest $request) {
+		$this->request = $request;
+		$this->service = $service;
+		$this->subject = $request->getParam('subject', '');
 	}
 
 
 	/**
 	 * @return string
-	 * @since 20.0.0
+	 * @since 21.0.0
+	 */
+	public function getService(): string {
+		return $this->service;
+	}
+
+
+	/**
+	 * @return IRequest
+	 * @since 21.0.0
+	 */
+	public function getRequest(): IRequest {
+		return $this->request;
+	}
+
+
+	/**
+	 * @return string
+	 * @since 21.0.0
 	 */
 	public function getSubject(): string {
 		return $this->subject;
@@ -77,7 +105,7 @@ final class Webfinger implements IWebfinger, JsonSerializable {
 
 	/**
 	 * @return array
-	 * @since 20.0.0
+	 * @since 21.0.0
 	 */
 	public function getRels(): array {
 		return $this->rels;
@@ -88,9 +116,9 @@ final class Webfinger implements IWebfinger, JsonSerializable {
 	 * @param string $alias
 	 *
 	 * @return $this
-	 * @since 20.0.0
+	 * @since 21.0.0
 	 */
-	public function addAlias(string $alias): IWebfinger {
+	public function addAlias(string $alias): IWellKnown {
 		if (!in_array($alias, $this->aliases)) {
 			$this->aliases[] = $alias;
 		}
@@ -100,7 +128,7 @@ final class Webfinger implements IWebfinger, JsonSerializable {
 
 	/**
 	 * @return array
-	 * @since 20.0.0
+	 * @since 21.0.0
 	 */
 	public function getAliases(): array {
 		return $this->aliases;
@@ -111,10 +139,10 @@ final class Webfinger implements IWebfinger, JsonSerializable {
 	 * @param string $property
 	 * @param $value
 	 *
-	 * @return IWebfinger
-	 * @since 20.0.0
+	 * @return IWellKnown
+	 * @since 21.0.0
 	 */
-	public function addProperty(string $property, $value): IWebfinger {
+	public function addProperty(string $property, $value): IWellKnown {
 		$this->properties[$property] = $value;
 
 		return $this;
@@ -122,7 +150,7 @@ final class Webfinger implements IWebfinger, JsonSerializable {
 
 	/**
 	 * @return array
-	 * @since 20.0.0
+	 * @since 21.0.0
 	 */
 	public function getProperties(): array {
 		return $this->properties;
@@ -132,10 +160,10 @@ final class Webfinger implements IWebfinger, JsonSerializable {
 	/**
 	 * @param array $arr
 	 *
-	 * @return IWebfinger
-	 * @since 20.0.0
+	 * @return IWellKnown
+	 * @since 21.0.0
 	 */
-	public function addLink(array $arr): IWebfinger {
+	public function addLink(array $arr): IWellKnown {
 		$this->links[] = $arr;
 
 		return $this;
@@ -144,10 +172,10 @@ final class Webfinger implements IWebfinger, JsonSerializable {
 	/**
 	 * @param JsonSerializable $object
 	 *
-	 * @return IWebfinger
-	 * @since 20.0.0
+	 * @return IWellKnown
+	 * @since 21.0.0
 	 */
-	public function addLinkSerialized(JsonSerializable $object): IWebfinger {
+	public function addLinkSerialized(JsonSerializable $object): IWellKnown {
 		$this->links[] = $object;
 
 		return $this;
@@ -155,7 +183,7 @@ final class Webfinger implements IWebfinger, JsonSerializable {
 
 	/**
 	 * @return array
-	 * @since 20.0.0
+	 * @since 21.0.0
 	 */
 	public function getLinks(): array {
 		return $this->links;
@@ -164,7 +192,7 @@ final class Webfinger implements IWebfinger, JsonSerializable {
 
 	/**
 	 * @return array
-	 * @since 20.0.0
+	 * @since 21.0.0
 	 */
 	public function jsonSerialize(): array {
 		$data = [
@@ -176,4 +204,5 @@ final class Webfinger implements IWebfinger, JsonSerializable {
 
 		return array_filter($data);
 	}
+
 }

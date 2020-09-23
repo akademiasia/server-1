@@ -25,28 +25,36 @@ declare(strict_types=1);
  */
 
 
-namespace OCP\Webfinger\Model;
+namespace OCP\WellKnown\Model;
 
 use JsonSerializable;
+use OCP\IRequest;
 
 /**
- * @since 20.0.0
+ * @since 21.0.0
  *
- * @package OCP\Webfinger\Model
+ * @package OCP\WellKnown\Model
  */
-interface IWebfinger {
+interface IWellKnown {
+
+
+	/**
+	 * @return IRequest
+	 * @since 21.0.0
+	 */
+	public function getRequest(): IRequest;
 
 
 	/**
 	 * @return string
-	 * @since 20.0.0
+	 * @since 21.0.0
 	 */
 	public function getSubject(): string;
 
 
 	/**
 	 * @return array
-	 * @since 20.0.0
+	 * @since 21.0.0
 	 */
 	public function getRels(): array;
 
@@ -54,14 +62,14 @@ interface IWebfinger {
 	/**
 	 * @param string $alias
 	 *
-	 * @return IWebfinger
-	 * @since 20.0.0
+	 * @return IWellKnown
+	 * @since 21.0.0
 	 */
-	public function addAlias(string $alias): IWebfinger;
+	public function addAlias(string $alias): IWellKnown;
 
 	/**
 	 * @return array
-	 * @since 20.0.0
+	 * @since 21.0.0
 	 */
 	public function getAliases(): array;
 
@@ -70,14 +78,14 @@ interface IWebfinger {
 	 * @param string $property
 	 * @param $value
 	 *
-	 * @return IWebfinger
-	 * @since 20.0.0
+	 * @return IWellKnown
+	 * @since 21.0.0
 	 */
-	public function addProperty(string $property, $value): IWebfinger;
+	public function addProperty(string $property, $value): IWellKnown;
 
 	/**
 	 * @return array
-	 * @since 20.0.0
+	 * @since 21.0.0
 	 */
 	public function getProperties(): array;
 
@@ -85,23 +93,23 @@ interface IWebfinger {
 	/**
 	 * @param array $arr
 	 *
-	 * @return IWebfinger
-	 * @since 20.0.0
+	 * @return IWellKnown
+	 * @since 21.0.0
 	 */
-	public function addLink(array $arr): IWebfinger;
+	public function addLink(array $arr): IWellKnown;
 
 	/**
 	 * @param JsonSerializable $object
 	 *
-	 * @return IWebfinger
-	 * @since 20.0.0
+	 * @return IWellKnown
+	 * @since 21.0.0
 	 */
-	public function addLinkSerialized(JsonSerializable $object): IWebfinger;
+	public function addLinkSerialized(JsonSerializable $object): IWellKnown;
 
 
 	/**
 	 * @return array
-	 * @since 20.0.0
+	 * @since 21.0.0
 	 */
 	public function getLinks(): array;
 }
